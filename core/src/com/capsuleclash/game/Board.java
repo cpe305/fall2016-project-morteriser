@@ -1,16 +1,28 @@
 package com.capsuleclash.game;
 
+import com.capsuleclash.game.Observer;
 import com.capsuleclash.game.Cell.OverlayState;
 
 import java.awt.*;
 import java.util.*;
 
-public class Board {
+public class Board implements Subject {
+	
 	public static final int ROWS = 10;
 	public static final int COLUMNS = 10;
+	public static final int MAX_TURNS = 20;
+	
+	public enum TurnState { 
+		PLAYER1, PLAYER2
+	};
+
 	// probably need to make private
 	public Cell[][] board;
 	
+	private ArrayList<Observer> observers;
+	private TurnState turn;
+	private int curTurn;
+
 	public Board() {
 		board = new Cell[ROWS][COLUMNS];
 		for (int i = 0; i < ROWS; i++) {
@@ -18,48 +30,50 @@ public class Board {
 				board[i][j] = new Cell();
 			}
 		}
+		turn = TurnState.PLAYER1;
+		curTurn = 0;
 	}
-
 
 	/**
 	 * @param validSteps:
-	 *                 an array of legal steps a player can make at any point
-	 *                 validSteps for a player that can only move diagonally every step
-	 *                 ArrayList[Step(1,1), Step(1,-1), Step(-1,-1), Step(-1,1)]
+	 *            an array of legal steps a player can make at any point
+	 *            validSteps for a player that can only move diagonally every
+	 *            step ArrayList[Step(1,1), Step(1,-1), Step(-1,-1), Step(-1,1)]
 	 *
 	 *
-	 *                 move like a knight in chess
-	 *                 ArrayList[Step(1,2), Step(-1,2), ... ]
+	 *            move like a knight in chess ArrayList[Step(1,2), Step(-1,2),
+	 *            ... ]
 	 *
 	 * @param steps:
 	 *            number of steps the unit at the start point can make
-     *
+	 *
 	 * @param pickOne:
-     *               pretty neet feature
+	 *            pretty neet feature
 	 */
-	public boolean [][] getValidMoves(Point startPoint, ArrayList<Step> validSteps, int steps, boolean pickOne) {
-        boolean[][] moveMap = new boolean[ROWS][COLUMNS];
+	public boolean[][] getValidMoves(Point startPoint, ArrayList<Step> validSteps, int steps, boolean pickOne) {
+		boolean[][] moveMap = new boolean[ROWS][COLUMNS];
 		moveMap[startPoint.y][startPoint.x] = true;
 
 		Queue<Point> pointList = new LinkedList<Point>();
-        pointList.add(startPoint);
+		pointList.add(startPoint);
 
 		for (int stepIdx = 0; stepIdx < steps; stepIdx++) {
-            int queueSize = pointList.size();
-            for (int i = 0; i < queueSize; i++) {
+			int queueSize = pointList.size();
+			for (int i = 0; i < queueSize; i++) {
 
 				Point currentPoint = pointList.remove();
 				for (Step move : validSteps) {
-                    Point proposedMove = new Point(currentPoint.x + move.dx, currentPoint.y + move.dy);
+					Point proposedMove = new Point(currentPoint.x + move.dx, currentPoint.y + move.dy);
 
-					// check if there is an enemy on this space, you should probably refactor this into a method call (to check for checkmate or whatevs)
-                    if (/* !isEnemy(propsedMove) && */
-                    	inBounds(proposedMove) &&
-						!moveMap[proposedMove.y][proposedMove.x]) {
+					// check if there is an enemy on this space, you should
+					// probably refactor this into a method call (to check for
+					// checkmate or whatevs)
+					if (/* !isEnemy(propsedMove) && */
+					inBounds(proposedMove) && !moveMap[proposedMove.y][proposedMove.x]) {
 
-                        if (pickOne && stepIdx > 0) {
-							if (inBounds(new Point(currentPoint.x-move.dx, currentPoint.y-move.dy)) &&
-									moveMap[currentPoint.y - move.dy][currentPoint.x - move.dx]) {
+						if (pickOne && stepIdx > 0) {
+							if (inBounds(new Point(currentPoint.x - move.dx, currentPoint.y - move.dy))
+									&& moveMap[currentPoint.y - move.dy][currentPoint.x - move.dx]) {
 								moveMap[proposedMove.y][proposedMove.x] = true;
 								pointList.add(proposedMove);
 							}
@@ -75,11 +89,9 @@ public class Board {
 
 		return moveMap;
 	}
+
 	public boolean inBounds(Point p) {
-		return p.x >=0 &&
-				p.y >= 0 &&
-				p.x < COLUMNS &&
-				p.y < ROWS;
+		return p.x >= 0 && p.y >= 0 && p.x < COLUMNS && p.y < ROWS;
 
 	}
 
@@ -88,12 +100,30 @@ public class Board {
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 0; j < COLUMNS; j++) {
 				//
-				// use something like this to change each cell based on their path 
+				// use something like this to change each cell based on their
+				// path
 				// board[i][j].setOverlay(OverlayState.MOVE)
 				//
 				System.out.print("[" + board[i][j].getOverlay() + "]");
 			}
 			System.out.println();
+		}
+	}
+
+	@Override
+	public void register(Observer o) {
+		observers.add(o);
+	}
+
+	@Override
+	public void unregister(Observer o) {
+		observers.remove(o);
+	}
+
+	@Override
+	public void notifyObservers() {
+		for (Observer o : observers) {
+			o.update(this);
 		}
 	}
 }

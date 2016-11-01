@@ -6,13 +6,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class MainGame extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
+public class MainGame extends ApplicationAdapter implements Observer {
+	private SpriteBatch batch;
+	private Renderer renderer;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		renderer = Renderer.getInstance();
 		//img = new Texture("badlogic.jpg");
 	}
 
@@ -29,5 +30,10 @@ public class MainGame extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		//img.dispose();
+	}
+
+	@Override
+	public void update(Subject s) {
+		
 	}
 }

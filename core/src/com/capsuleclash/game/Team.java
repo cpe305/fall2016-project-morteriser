@@ -3,17 +3,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Team {
-   private ArrayList<Capsule> team;
+   private ArrayList<Figure> team;
    
    public Team() {
-      team = new ArrayList<Capsule>();
+      team = new ArrayList<Figure>();
    }
    
-   public void add(Capsule x) {
+   public void add(Figure x) {
       team.add(x);
    }
    
-   public void remove(Capsule x) {
+   public void remove(Figure x) {
       team.remove(x);
    }
    
@@ -22,7 +22,7 @@ public class Team {
    }
    
    public void print() {
-      for (Capsule c: team) {
+      for (Figure c: team) {
          System.out.println(c);
       }
    }

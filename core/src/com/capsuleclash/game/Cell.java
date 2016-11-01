@@ -3,7 +3,7 @@ package com.capsuleclash.game;
 import java.util.ArrayList;
 
 
-public class Cell implements Subject {
+public class Cell {
   public enum State {
     EMPTY, UNITP1, UNITP2
   };
@@ -11,7 +11,6 @@ public class Cell implements Subject {
     NONE, MOVE, ATTACK
   };
 
-  private ArrayList<Observer> observers;
   private State state;
   private OverlayState overlay;
 
@@ -50,22 +49,5 @@ public class Cell implements Subject {
         break;
     }
     return result;
-  }
-
-  @Override
-  public void register(Observer o) {
-    observers.add(o);
-  }
-
-  @Override
-  public void unregister(Observer o) {
-    observers.remove(o);
-  }
-
-  @Override
-  public void notifyObservers() {
-    for (Observer o : observers) {
-      o.update(this);
-    }
   }
 }
