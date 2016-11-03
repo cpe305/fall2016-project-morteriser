@@ -26,12 +26,23 @@ public class Figure implements Comparable<Figure>{
    @Override
    public int compareTo(Figure other) {
       int comparing = other.getIdentity();
-      return this.rarity - comparing;
+      return ((Integer)id).compareTo(comparing);
    }
    
    @Override
    public String toString() {
-      return "[" + name + "]: " + rarity;
+      return "[" + name + "]: " + id;
+   }
+   
+   @Override
+   public boolean equals(Object other) {
+	   boolean result = false;
+
+	   if (other != null && other instanceof Figure) {
+		   Figure fig = (Figure)other;
+		   result = this.id == fig.getIdentity();
+	   }
+	   return result;
    }
    
    public int getIdentity() {
