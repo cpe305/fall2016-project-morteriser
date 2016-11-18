@@ -3,7 +3,7 @@ package com.capsuleclash.game;
 public class StandardAction implements Action {
 
   //for testing Figure
-  private StandardAction() {
+  public StandardAction() {
     
   }
   

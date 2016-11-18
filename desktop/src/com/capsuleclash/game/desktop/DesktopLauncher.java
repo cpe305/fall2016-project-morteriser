@@ -4,16 +4,20 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.capsuleclash.game.*;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		//LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		//new LwjglApplication(new MainGame(), config);
+		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.title = "Capsule Clash";
+		config.width = 480;
+		config.height = 320;
 		
-		Board b = new Board();
+		Board brd = new Board();
+		MainGame game = new MainGame(brd);
+		brd.register(game);
+		new LwjglApplication(game, config);
+		//brd.notifyObservers();
+
+		//Board b = new Board();
 		//b.printBoard();
 		
 		/*Team t = new Team();
@@ -24,7 +28,7 @@ public class DesktopLauncher {
 		System.out.println("Sorted: ");
 		t.sort();
 		t.print();*/
-		boolean [][] bishop = b.getValidMoves(new Point(1,1), new ArrayList<Step>() {
+		/*boolean [][] bishop = b.getValidMoves(new Point(1,1), new ArrayList<Step>() {
 			{
 				add(new Step(1, 1));
 				add(new Step(-1, -1));
@@ -61,6 +65,6 @@ public class DesktopLauncher {
 
 		for (boolean[] a : moves2) {
 			System.out.println(Arrays.toString(a));
-		}
+		}*/
 	}
 }

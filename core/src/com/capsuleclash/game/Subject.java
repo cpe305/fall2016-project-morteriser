@@ -1,7 +1,7 @@
 package com.capsuleclash.game;
 
 
-public interface Subject {
+public abstract class Subject {
   
   public abstract void register(Observer o);   
   public abstract void unregister(Observer o);     

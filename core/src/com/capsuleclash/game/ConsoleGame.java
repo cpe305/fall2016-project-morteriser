@@ -18,7 +18,7 @@ public class ConsoleGame implements Observer {
 	}
 	
 	@Override
-	public void update(Subject s) {
+	public void update() {
 		
 	}
 

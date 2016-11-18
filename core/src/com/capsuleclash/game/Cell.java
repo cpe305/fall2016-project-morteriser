@@ -20,10 +20,14 @@ public class Cell {
     state = State.EMPTY;
     overlay = OverlayState.NONE;
   }
+  
+  public State getState() {
+	  return state;
+  }
 
   // adjust to take in a unit and the current turn state
-  public void placeUnit() {
-    state = State.UNITP1;
+  public void placeUnit(State state) {
+    this.state = state;
   }
 
   public void removeUnit() {
@@ -34,9 +38,9 @@ public class Cell {
     this.overlay = overlay;
   }
 
-  // for testing purposes, will replace with textures
-  public String getOverlay() {
-    String result = "N";
+  public OverlayState getOverlay() {
+	return overlay;
+    /**String result = "N";
     switch (overlay) {
       case NONE:
         result = "N";
@@ -48,6 +52,6 @@ public class Cell {
         result = "A";
         break;
     }
-    return result;
+    return result;*/
   }
 }
