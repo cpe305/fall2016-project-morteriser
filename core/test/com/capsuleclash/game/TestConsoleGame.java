@@ -7,7 +7,9 @@ import java.io.PrintWriter;
 
 import org.junit.Test;
 
-public class TestConsoleGame {
+import junit.framework.TestCase;
+
+public class TestConsoleGame extends TestCase {
 	private ConsoleGame console;
 
 	@Test
