@@ -72,6 +72,36 @@
 <p>After an attack is dealt the units will lose health based on the damage it will take. When a unit no longer has any health it will be removed from play. A player wins once all the opposing units are gone or they have the highest overall health of all their units should 50 turns have based for both players.</p>
 
 <h2>
+<a id="system-architecture" class="anchor" href="#system-architecture" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>System Architecture</h2>
+
+<p>3-Tier Layered Architecture:
+<img src="http://i.imgur.com/xpIyA2U.png" alt="3-Tier"></p>
+
+<h2>
+<a id="uml-diagram" class="anchor" href="#uml-diagram" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UML Diagram</h2>
+
+<p>Class Diagram:
+<img src="http://i.imgur.com/lM2toKH.png" alt="Class Diagram"></p>
+
+<h2>
+<a id="design-patterns" class="anchor" href="#design-patterns" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Design Patterns</h2>
+
+<p><strong>Singleton Pattern:</strong></p>
+
+<ul>
+<li>Used for FigurineCollection and Renderer classes. Both can only be instantiated once due to creating a lot of expensive objects that are specific to what is read from an xml document. In the case of Renderer, the Texture class takes a lot of resources to create and using Singleton prevents the need to create it each time. While the FigurineCollection is meant to be used by many classes whenever it wants a reference to any of the possible figurines, preventing the need to instantiate all existing ones for each class that wants to look.
+<strong>Strategy Pattern:</strong>
+</li>
+<li>Used for Action interface. Allows Figurines to have different actions that they can take by implementing different classes to do each separate functionality. The application of this is how StandardAction calculates the damage based on your attack and the target's defense, while PierceAction calculates the damage based on your attack while ignoring the target's defense.
+<strong>Factory Method Pattern:</strong>
+</li>
+<li>Used for ActionFactory class. Allows the creation of a certain type of Action for each Figurine based on what was read in the xml document of FigurineCollection. This allows the document to say something simple like "standard" to then have the factory interpret that as instantiating a StandardAction class to put as that Figurine's Action.
+<strong>Observer Pattern:</strong>
+</li>
+<li>Used on MainGame and Board classes. Board is the Subject while MainGame is the Observer, as Board deals with all the logic in the game while MainGame deals with the graphics and user input. Whenever a change occurs in board, it notifies the MainGame to inform it to change what it displays.</li>
+</ul>
+
+<h2>
 <a id="tools-used" class="anchor" href="#tools-used" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tools Used</h2>
 
 <ul>
