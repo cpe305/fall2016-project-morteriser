@@ -1,6 +1,7 @@
 package com.capsuleclash.game;
 
 public class Figure implements Comparable<Figure>{
+	
    private int id;
    private int rarity;
    private int size;
@@ -9,7 +10,19 @@ public class Figure implements Comparable<Figure>{
    private int defense;
    private int move;
    private String name;
-   private Action action;
+   private Action action;   
+   
+   public Figure(Figure other) {
+	   this.id = other.getIdentity();
+	   this.rarity = 1;
+	   this.size = 1;
+	   this.health = other.getHealth();
+	   this.attack = other.getAttack();
+	   this.defense = other.getDefense();
+	   this.move = other.getMove();
+	   this.name = other.getName();
+	   this.action = other.getAction();
+   }
    
    public Figure(int id, int rarity, int size, int health, int attack, int defense,
 		   int move, String name, Action action) {
@@ -21,6 +34,7 @@ public class Figure implements Comparable<Figure>{
       this.defense = defense;
       this.move = move;
       this.name = name;
+      this.action = action;
    }
    
    @Override
@@ -31,7 +45,9 @@ public class Figure implements Comparable<Figure>{
    
    @Override
    public String toString() {
-      return "[" + name + "]: " + id;
+      return "[" + name + "]: " + id + " " + rarity + " " + size + " " + health + " " + attack +
+    		  " " + defense + " " + move + " " + action;
+
    }
    
    @Override
@@ -43,6 +59,37 @@ public class Figure implements Comparable<Figure>{
 		   result = this.id == fig.getIdentity();
 	   }
 	   return result;
+   }
+   
+   public int getAttack() {
+	   return attack;
+   }
+   
+   public int getDefense() {
+	   return defense;
+   }
+   
+   public void takeDamage(int damage) {
+	   health -= damage;
+	   if (health < 0) {
+		   health = 0;
+	   }
+   }
+   
+   public int getHealth() {
+	   return health;
+   }
+   
+   public int getMove() {
+	   return move;
+   }
+   
+   public Action getAction() {
+	   return action;
+   }
+   
+   public String getName() {
+	   return name;
    }
    
    public int getIdentity() {

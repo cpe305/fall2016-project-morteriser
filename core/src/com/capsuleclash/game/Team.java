@@ -17,6 +17,14 @@ public class Team {
       team.remove(x);
    }
    
+   public int totalHealth() {
+	   int total = 0;
+	   for (Figure fig : team) {
+		   total += fig.getHealth();
+	   }
+	   return total;
+   }
+   
    public void sort() {
       Collections.sort(team);
    }

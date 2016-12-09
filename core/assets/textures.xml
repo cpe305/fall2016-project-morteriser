@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class>
+	<texture id = "0">
+		<file>knight.png</file>
+	</texture>
+	<texture id = "1">
+		<file>cactus.png</file>
+	</texture>
+	<texture id = "2">
+		<file>reaper.png</file>
+	</texture>
+	<texture id = "3">
+		<file>moth.png</file>
+	</texture>
+	<texture id = "4">
+		<file>tile.png</file>
+	</texture>
+	<texture id = "5">
+		<file>movetile.png</file>
+	</texture>
+	<texture id = "6">
+		<file>attacktile.png</file>
+	</texture>
+</class>

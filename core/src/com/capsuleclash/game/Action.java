@@ -7,5 +7,5 @@ package com.capsuleclash.game;
  */
 public interface Action {
 
-	public int calculate();
+	public int calculate(Figure user, Figure target);
 }

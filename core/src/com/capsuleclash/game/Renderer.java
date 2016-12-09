@@ -26,26 +26,31 @@ public class Renderer {
 	
 	private Renderer() {
 		textures = new ArrayList<Texture>();
-		
+
 		try {
-			File in = new File("figures.xml");
+			File in = new File("textures.xml");
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
 	        Document doc = builder.parse(in);
 	        doc.getDocumentElement().normalize();
-	        NodeList nodes = doc.getElementsByTagName("figure");
+	        NodeList nodes = doc.getElementsByTagName("texture");
 	        
 	        for (int ndx = 0; ndx < nodes.getLength(); ndx++) {
 	        	Node node = nodes.item(ndx);
 	        	if (node.getNodeType() == Node.ELEMENT_NODE) {
 	                Element element = (Element) node;
-
+	                String text = element.getElementsByTagName("file").item(0).getTextContent();
+	                textures.add(new Texture(text));
 	             }
 	        }
 		}
 		catch (Exception e) {
 			System.out.println(e);
 		}
+	}
+	
+	public Texture getTexture(int id) {
+		return textures.get(id);
 	}
 	
 	public static Renderer getInstance() {

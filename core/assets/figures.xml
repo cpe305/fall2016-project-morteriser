@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class>
+	<figure id = "0">
+		<rarity>1</rarity>
+		<size>1</size>
+		<health>3</health>
+		<attack>2</attack>
+		<defense>2</defense>
+		<move>2</move>
+		<name>Knight</name>
+		<action>standard</action>
+	</figure>
+	<figure id = "1">
+		<rarity>1</rarity>
+		<size>1</size>
+		<health>6</health>
+		<attack>1</attack>
+		<defense>1</defense>
+		<move>2</move>
+		<name>Cactus</name>
+		<action>standard</action>
+	</figure>
+	<figure id = "2">
+		<rarity>1</rarity>
+		<size>1</size>
+		<health>3</health>
+		<attack>6</attack>
+		<defense>0</defense>
+		<move>1</move>
+		<name>Reaper</name>
+		<action>pierce</action>
+	</figure>
+	<figure id = "3">
+		<rarity>1</rarity>
+		<size>1</size>
+		<health>2</health>
+		<attack>3</attack>
+		<defense>1</defense>
+		<move>4</move>
+		<name>Moth</name>
+		<action>standard</action>
+	</figure>
+</class>

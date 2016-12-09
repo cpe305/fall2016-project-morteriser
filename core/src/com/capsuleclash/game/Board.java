@@ -12,20 +12,16 @@ public class Board extends Subject {
 	public static final int COLUMNS = 8;
 	public static final int MAX_TURNS = 20;
 	
-	public enum TurnState { 
-		PLAYER1, PLAYER2
-	};
 
 	// probably need to make private
 	public Cell[][] board;
 	
 	private ArrayList<Observer> observers;
-	private TurnState turn;
 	private int curTurn;
 	private Cell old;
-	private TurnState compareTurn;
 	private Cell.State compareCell;
 	private boolean moveable;
+	private ArrayList<Team> team;
 
 	public Board() {
 		board = new Cell[ROWS][COLUMNS];
@@ -34,15 +30,49 @@ public class Board extends Subject {
 				board[i][j] = new Cell();
 			}
 		}
-		turn = TurnState.PLAYER1;
 		curTurn = 1;
 		observers = new ArrayList<Observer>();
-		board[3][0].placeUnit(Cell.State.UNITP1);
-		board[4][1].placeUnit(Cell.State.UNITP1);
-		board[6][6].placeUnit(Cell.State.UNITP2);
+		team = new ArrayList<Team>();
+		
+		// player 1
+		team.add(new Team());
+		// player 2
+		team.add(new Team());
+		
 		moveable = true;
 		old = board[0][0];
 		updateTurn();
+	}
+	
+	public void reset() {
+		for (int i = 0; i < ROWS; i++) {
+			for (int j = 0; j < COLUMNS; j++) {
+				board[i][j] = new Cell();
+			}
+		}
+		curTurn = 1;
+		team = new ArrayList<Team>();
+		
+		// player 1
+		team.add(new Team());
+		// player 2
+		team.add(new Team());
+		
+		moveable = true;
+		old = board[0][0];
+		updateTurn();
+	}
+	
+	
+	public void addUnit(Figure figure, boolean player1, int count) {
+		if (player1) {
+			team.get(0).add(figure);
+			board[2 + count][0].placeUnit(figure, Cell.State.UNITP1);
+		}
+		else {
+			team.get(1).add(figure);
+			board[2 + count % 4][7].placeUnit(figure, Cell.State.UNITP2);
+		}
 	}
 	
 	public void updateTurn() {
@@ -59,20 +89,29 @@ public class Board extends Subject {
 
 		if (board[gridX - 1][gridY].getOverlay() == OverlayState.MOVE &&
 				old.getState() == compareCell) {
-			board[gridX - 1][gridY].placeUnit(compareCell);
+			Figure fig = old.getFigure();
 			old.removeUnit();
+			board[gridX - 1][gridY].placeUnit(fig, compareCell);
 			old = board[gridX - 1][gridY];
 			getValidMoves(new Point(gridX - 1, gridY), 
 					new Moves(1).getList(), 1, true, OverlayState.ATTACK);
 			moveable = false;
 		}
 		else if (moveable && board[gridX - 1][gridY].getState() == compareCell) {
-			getValidMoves(new Point(gridX - 1, gridY), 
-					new Moves(2).getList(), 1, true, OverlayState.MOVE);
 			old = board[gridX - 1][gridY];
+			getValidMoves(new Point(gridX - 1, gridY), 
+					new Moves(old.getFigure().getMove()).getList(), 
+					1, true, OverlayState.MOVE);
+			board[gridX - 1][gridY].setOverlay(OverlayState.MOVE);
 		}
 		else if (!moveable) {
-			//if (board[gridX - 1][gridY].getOverlay() == OverlayState.ATTACK)
+			if (board[gridX - 1][gridY].getOverlay() == OverlayState.ATTACK) {
+				old.getFigure().getAction().calculate(old.getFigure(), 
+						board[gridX - 1][gridY].getFigure());
+				if (board[gridX - 1][gridY].getFigure().getHealth() == 0) {
+					board[gridX - 1][gridY].removeUnit();
+				}
+			}
 			eraseOverlay();
 			notifyObservers();
 			curTurn++;
@@ -170,6 +209,14 @@ public class Board extends Subject {
 				board[i][j].setOverlay(OverlayState.NONE);
 			}
 		}
+	}
+	
+	public ArrayList<Team> getTeams() {
+		return team;
+	}
+	
+	public int getTurn() {
+		return curTurn;
 	}
 	
 	public void register(Observer o) {

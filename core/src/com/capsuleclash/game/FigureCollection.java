@@ -31,6 +31,7 @@ public class FigureCollection {
 		
 		try {
 			File in = new File("figures.xml");
+			ActionFactory af = new ActionFactory();
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
 	        Document doc = builder.parse(in);
@@ -41,20 +42,34 @@ public class FigureCollection {
 	        	Node node = nodes.item(ndx);
 	        	if (node.getNodeType() == Node.ELEMENT_NODE) {
 	                Element element = (Element) node;
-	                String id = element.getAttribute("id");
-	                String rarity = element.getElementsByTagName("rarity").item(0).getTextContent();
-	                String size = element.getElementsByTagName("size").item(0).getTextContent();
-	                String health = element.getElementsByTagName("health").item(0).getTextContent();
-	                String attack = element.getElementsByTagName("attack").item(0).getTextContent();
-	                String defense = element.getElementsByTagName("defense").item(0).getTextContent();
-	                String move = element.getElementsByTagName("move").item(0).getTextContent();
+	                int id = Integer.parseInt(element.getAttribute("id"));
+	                int rarity = Integer.parseInt(
+	                		element.getElementsByTagName("rarity").item(0).getTextContent());
+	                int size = Integer.parseInt(
+	                		element.getElementsByTagName("size").item(0).getTextContent());
+	                int health = Integer.parseInt(
+	                		element.getElementsByTagName("health").item(0).getTextContent());
+	                int attack = Integer.parseInt(
+	                		element.getElementsByTagName("attack").item(0).getTextContent());
+	                int defense = Integer.parseInt(
+	                		element.getElementsByTagName("defense").item(0).getTextContent());
+	                int move = Integer.parseInt(
+	                		element.getElementsByTagName("move").item(0).getTextContent());
 	                String name = element.getElementsByTagName("name").item(0).getTextContent();
+	                String type = element.getElementsByTagName("action").item(0).getTextContent();
+	                allUniqueFigures.add(new Figure(id, rarity, size, health, attack, 
+	                		defense, move, name, af.getAction(type)));
 	             }
 	        }
 		}
 		catch (Exception e) {
 			System.out.println(e);
 		}
+	}
+	
+	public Figure getFigure(int id) {
+		Figure uniqueFigure = new Figure(allUniqueFigures.get(id));
+		return uniqueFigure;
 	}
 	
 	
