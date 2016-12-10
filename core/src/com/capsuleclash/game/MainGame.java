@@ -2,14 +2,17 @@ package com.capsuleclash.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.capsuleclash.game.Cell.OverlayState;
 
+/**
+ * The Main Game based on libgdx's gui and controller. 
+ * Handles input and displaying of graphics, relies on the Board for logic.
+ * @author Hristo
+ */
 public class MainGame extends ApplicationAdapter implements Observer {
 	
 	public static final int BOARD_SIZE = 8;
@@ -17,9 +20,24 @@ public class MainGame extends ApplicationAdapter implements Observer {
 	public static final int OFFSET = 32;
 	public static final int TEAM_SIZE = 4;
 	
+	public static final int Y_OFFSET = 5;
+	public static final int FIRST_UNIT = 3;
+	public static final int SECOND_UNIT = 5;
+	public static final int THIRD_UNIT = 7;
+	public static final int FOURTH_UNIT = 9;
+	
+	/**
+	 * The current screen to be displayed.
+	 * PLAY1: Player 1 chooses units.
+	 * PLAY2: Player 2 chooses units.
+	 * GAME: Player 1 and 2 alternate to play the game.
+	 * END1: Player 1 loses the game.
+	 * END2: Player 2 loses the game.
+	 * @author Hristo
+	 */
 	public enum MenuState { 
 		PLAY1, PLAY2, GAME, END1, END2
-	};
+	}
 	
 	private SpriteBatch batch;
 	private Renderer renderer;
@@ -34,12 +52,11 @@ public class MainGame extends ApplicationAdapter implements Observer {
 	private Texture play1;
 	private Texture play2;
 	private Texture win;
-	//private Texture tile;
-	//private Texture move;
-	//private Texture atk;
-	//private Texture fig;
-	//private Texture fig2;
 	
+	/**
+	 * Initialize the MainGame and keep a reference to the Board that is observed.
+	 * @param sub the obversed board.
+	 */
 	public MainGame(Subject sub) {
 		if (sub instanceof Board) {
 			this.sub = (Board)sub;
@@ -61,13 +78,6 @@ public class MainGame extends ApplicationAdapter implements Observer {
 		play1 = new Texture("player1.png");
 		play2 = new Texture("player2.png");
 		win = new Texture("win.png");
-        //tile = new Texture("tile.png");
-		//move = new Texture("movetile.png");
-		//atk = new Texture("attacktile.png");
-		//fig = new Texture("testfig.png");
-		//fig2 = new Texture("testfig2.png");
-		//update();
-		//img = new Texture("badlogic.jpg");
 	}
 
 	@Override
@@ -80,10 +90,6 @@ public class MainGame extends ApplicationAdapter implements Observer {
 		else {
 			loadMenu();
 		}
-		//batch.begin();
-		//batch.draw(img, 0, 0);
-		//batch.end();
-
 		
 		if (Gdx.input.justTouched()) {
 	        position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -100,17 +106,17 @@ public class MainGame extends ApplicationAdapter implements Observer {
 	        		sub.reset();
 	        		count = 0;
 	        	}
-	        	else {
-	        		if (gridX == 3 && gridY == 5) {
+	        	else if (gridY == Y_OFFSET) {
+	        		if (gridX == FIRST_UNIT) {
 	        			addUnit(0);
 	        		}
-	        		else if (gridX == 5 && gridY == 5) {
+	        		else if (gridX == SECOND_UNIT) {
 	        			addUnit(1);
 	        		}
-	        		else if (gridX == 7 && gridY == 5) {
+	        		else if (gridX == THIRD_UNIT) {
 	        			addUnit(2);
 	        		}
-	        		else if (gridX == 9 && gridY == 5) {
+	        		else if (gridX == FOURTH_UNIT) {
 	        			addUnit(3);
 	        		}
 	        	}
@@ -118,6 +124,10 @@ public class MainGame extends ApplicationAdapter implements Observer {
 		}
 	}
 	
+	/**
+	 * Adds a unit to the board based on when it was selected.
+	 * @param index the id of the unit being added.
+	 */
 	public void addUnit(int index) {
 		sub.addUnit(fc.getFigure(index), menu == MenuState.PLAY1, count);
 		count++;
@@ -130,6 +140,12 @@ public class MainGame extends ApplicationAdapter implements Observer {
 		}
 	}
 	
+	/**
+	 * When the user presses on a location in the grid, it calls the board to
+	 * check the cell for any changes.
+	 * @param gridX the X coordinate of the cell clicked on.
+	 * @param gridY the Y coordinate of the cell clicked on.
+	 */
 	public void press(double gridX, double gridY) {
 		sub.updateTurn();
 		if (gridX < 9 && gridY < 9) {
@@ -142,6 +158,9 @@ public class MainGame extends ApplicationAdapter implements Observer {
 		batch.dispose();
 	}
 
+	/**
+	 * Loads the display for the selecting unit and won game screens.
+	 */
 	public void loadMenu() {
 		batch.begin();
 		
@@ -166,9 +185,9 @@ public class MainGame extends ApplicationAdapter implements Observer {
 	@Override
 	public void update() {
 
-		OverlayState overState = OverlayState.NONE;
-		Cell.State state = Cell.State.EMPTY;
-		Texture toUse = renderer.getTexture(4);
+		OverlayState overState;
+		Cell.State state;
+		Texture toUse;
 		batch.begin();
 		
 		if (sub.getTurn() % 2 == 1) {
@@ -180,7 +199,7 @@ public class MainGame extends ApplicationAdapter implements Observer {
 		
 		for (int row = 0; row < BOARD_SIZE; row++) {
 			for (int col = 0; col < BOARD_SIZE; col++) {
-				overState = sub.board[row][col].getOverlay();
+				overState = sub.getBoard()[row][col].getOverlay();
 				toUse = renderer.getTexture(4);
 				if (overState == OverlayState.MOVE) {
 					toUse = renderer.getTexture(5);
@@ -188,15 +207,15 @@ public class MainGame extends ApplicationAdapter implements Observer {
 				else if (overState == OverlayState.ATTACK) {
 					toUse = renderer.getTexture(6);
 				}
-				batch.draw(toUse, row * TILE_SIZE + OFFSET, col * TILE_SIZE + OFFSET);
+				batch.draw(toUse, (float) row * TILE_SIZE + OFFSET, 
+						(float) col * TILE_SIZE + OFFSET);
 				
-				state = sub.board[row][col].getState();
+				state = sub.getBoard()[row][col].getState();
 				if (state != Cell.State.EMPTY) {
-					toUse = renderer.getTexture(sub.board[row][col].getFigure().getIdentity());
-					batch.draw(toUse, row * TILE_SIZE + OFFSET, col * TILE_SIZE + OFFSET);
+					toUse = renderer.getTexture(sub.getBoard()[row][col].getFigure().getIdentity());
+					batch.draw(toUse, (float) row * TILE_SIZE + OFFSET, 
+							(float) col * TILE_SIZE + OFFSET);
 				}
-				//System.out.println(row + " " + col);
-				//sub.board[row][col].setOverlay(OverlayState.NONE);
 			}
 		}
 		

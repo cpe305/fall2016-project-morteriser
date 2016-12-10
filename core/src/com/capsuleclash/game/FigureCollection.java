@@ -2,8 +2,8 @@ package com.capsuleclash.game;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.badlogic.gdx.graphics.Texture;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.io.File;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -26,8 +26,10 @@ public class FigureCollection {
 	
 	private static FigureCollection instance;
 	
+	private static final Logger logger = Logger.getLogger(FigureCollection.class.getName());
+	
 	private FigureCollection() {
-		allUniqueFigures = new ArrayList<Figure>();
+		allUniqueFigures = new ArrayList<>();
 		
 		try {
 			File in = new File("figures.xml");
@@ -43,10 +45,6 @@ public class FigureCollection {
 	        	if (node.getNodeType() == Node.ELEMENT_NODE) {
 	                Element element = (Element) node;
 	                int id = Integer.parseInt(element.getAttribute("id"));
-	                int rarity = Integer.parseInt(
-	                		element.getElementsByTagName("rarity").item(0).getTextContent());
-	                int size = Integer.parseInt(
-	                		element.getElementsByTagName("size").item(0).getTextContent());
 	                int health = Integer.parseInt(
 	                		element.getElementsByTagName("health").item(0).getTextContent());
 	                int attack = Integer.parseInt(
@@ -57,19 +55,23 @@ public class FigureCollection {
 	                		element.getElementsByTagName("move").item(0).getTextContent());
 	                String name = element.getElementsByTagName("name").item(0).getTextContent();
 	                String type = element.getElementsByTagName("action").item(0).getTextContent();
-	                allUniqueFigures.add(new Figure(id, rarity, size, health, attack, 
+	                allUniqueFigures.add(new Figure(id, health, attack, 
 	                		defense, move, name, af.getAction(type)));
 	             }
 	        }
 		}
 		catch (Exception e) {
-			System.out.println(e);
+			logger.log(Level.SEVERE, "XML reading error: ", e);
 		}
 	}
 	
+	/**
+	 * Gets the figure based on the id and creates a unique instance of it.
+	 * @param id of the figure to differentiate them.
+	 * @return a new instance of the figure with that id.
+	 */
 	public Figure getFigure(int id) {
-		Figure uniqueFigure = new Figure(allUniqueFigures.get(id));
-		return uniqueFigure;
+		return new Figure(allUniqueFigures.get(id));
 	}
 	
 	

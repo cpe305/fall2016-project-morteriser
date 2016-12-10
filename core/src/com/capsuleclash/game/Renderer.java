@@ -1,6 +1,8 @@
 package com.capsuleclash.game;
 
 import java.util.List;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -24,8 +26,11 @@ public class Renderer {
 	
 	private static Renderer instance;
 	
+	private static final Logger logger = Logger.getLogger(FigureCollection.class.getName());
+
+	
 	private Renderer() {
-		textures = new ArrayList<Texture>();
+		textures = new ArrayList<>();
 
 		try {
 			File in = new File("textures.xml");
@@ -45,10 +50,15 @@ public class Renderer {
 	        }
 		}
 		catch (Exception e) {
-			System.out.println(e);
+			logger.log(Level.SEVERE, "Texture loading error: ", e);
 		}
 	}
 	
+	/**
+	 * Gets the Texture based on its unique id.
+	 * @param id the Texture's unique id.
+	 * @return the Texture to be displayed.
+	 */
 	public Texture getTexture(int id) {
 		return textures.get(id);
 	}

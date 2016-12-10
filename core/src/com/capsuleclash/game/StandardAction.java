@@ -1,10 +1,11 @@
 package com.capsuleclash.game;
 
+/**
+ * A type of Action that calculates the damage done by subtracting the target defense from
+ * the user's attack.
+ * @author Hristo
+ */
 public class StandardAction implements Action {
-
-	public StandardAction() {
-
-	}
 
 	@Override
 	public int calculate(Figure user, Figure target) {
@@ -16,6 +17,10 @@ public class StandardAction implements Action {
 		return damage;
 	}
 	
+	/**
+	 * Returns the name of this action.
+	 */
+	@Override
 	public String toString() {
 		return "Standard";
 	}

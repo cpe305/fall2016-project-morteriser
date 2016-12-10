@@ -5,6 +5,7 @@
 Capsule Clash is a 2 player strategy game where players select units to fight each other with on a turn based board.
 
 Github url: https://github.com/cpe305/fall2016-project-morteriser
+Github pages: https://cpe305.github.io/fall2016-project-morteriser/
 
 ## Description
 
