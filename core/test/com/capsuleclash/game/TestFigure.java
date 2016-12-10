@@ -2,21 +2,45 @@ package com.capsuleclash.game;
 
 import static org.junit.Assert.*;
 
-
 import org.junit.Test;
 
 public class TestFigure {
-  private Figure figure;
-  
-  @Test
-  public void testCompareTo() {
-     /**figure = new Figure(2, 3, 4, 5, 6, 7, 1, "figOne", new StandardAction());
-     figure2 = new Figure(2, 3, 4, 5, 6, 7, 1, "figTwo", new StandardAction());
-     figure3 = new Figure(7, 6, 5, 4, 3, 2, 11, "figThree", new StandardAction());
 
-     assertTrue(0 == figure2.compareTo(figure1));
-     assertTrue(0 > figure2.compareTo(figure3));**/
+	@Test
+	public void testCompareTo() {
+		System.setProperty("user.dir", System.getProperty("user.dir") + "/assets/");
+		FigureCollection fc = FigureCollection.getInstance();
 
-  }
+		Figure fig = fc.getFigure(0);
+		Figure fig2 = fc.getFigure(1);
+		assertEquals(-1, fig.compareTo(fig2));
+		assertEquals(1, fig2.compareTo(fig));
+		assertEquals(0, fig.compareTo(fc.getFigure(0)));
+	}
 
+	@Test
+	public void testTakeDamage() {
+		System.setProperty("user.dir", System.getProperty("user.dir") + "/assets/");
+		FigureCollection fc = FigureCollection.getInstance();
+
+		Figure fig = fc.getFigure(0);
+		
+		assertEquals(3, fig.getHealth());
+		fig.takeDamage(1);
+		assertEquals(2, fig.getHealth());
+		fig.takeDamage(4);
+		assertEquals(0, fig.getHealth());
+	}
+
+	@Test
+	public void testEquals() {
+		System.setProperty("user.dir", System.getProperty("user.dir") + "/assets/");
+		FigureCollection fc = FigureCollection.getInstance();
+		
+		Figure fig = fc.getFigure(0);
+		Figure fig2 = fc.getFigure(1);
+		assertTrue(fig.equals(fc.getFigure(0)));
+		assertFalse(fig.equals(fig2));
+		assertEquals(fig.toString(), fc.getFigure(0).toString());
+	}
 }
