@@ -167,13 +167,14 @@ public class Board implements Subject {
 	 * 			  the origin point of what is going to be checked
 	 * @param type:
 	 *            the intended OverlayState to change to move or attack.
+	 * @return an array of boolean values that have been generated.
 	 */
 	public boolean[][] getValidMoves(Point startPoint, List<Step> validSteps, 
 			int steps, boolean pickOne, OverlayState type) {
 		eraseOverlay();
 		boolean[][] moveMap = new boolean[ROWS][COLUMNS];
 		moveMap[startPoint.y][startPoint.x] = true;
-		Queue<Point> pointList = new LinkedList<Point>();
+		Queue<Point> pointList = new LinkedList<>();
 		pointList.add(startPoint);
 
 		for (int stepIdx = 0; stepIdx < steps; stepIdx++) {

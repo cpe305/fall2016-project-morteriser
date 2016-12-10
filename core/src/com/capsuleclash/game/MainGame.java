@@ -106,21 +106,32 @@ public class MainGame extends ApplicationAdapter implements Observer {
 	        		sub.reset();
 	        		count = 0;
 	        	}
-	        	else if (gridY == Y_OFFSET) {
-	        		if (gridX == FIRST_UNIT) {
-	        			addUnit(0);
-	        		}
-	        		else if (gridX == SECOND_UNIT) {
-	        			addUnit(1);
-	        		}
-	        		else if (gridX == THIRD_UNIT) {
-	        			addUnit(2);
-	        		}
-	        		else if (gridX == FOURTH_UNIT) {
-	        			addUnit(3);
-	        		}
+	        	else {
+	        		selectUnit((int)gridX, (int)gridY);
 	        	}
 	        }
+		}
+	}
+	
+	/**
+	 * See if you selected a valid unit.
+	 * @param gridX X coordinate.
+	 * @param gridY Y coordinate.
+	 */
+	public void selectUnit(int gridX, int gridY) {
+		if (gridY == Y_OFFSET) {
+    		if (gridX == FIRST_UNIT) {
+    			addUnit(0);
+    		}
+    		else if (gridX == SECOND_UNIT) {
+    			addUnit(1);
+    		}
+    		else if (gridX == THIRD_UNIT) {
+    			addUnit(2);
+    		}
+    		else if (gridX == FOURTH_UNIT) {
+    			addUnit(3);
+    		}
 		}
 	}
 	

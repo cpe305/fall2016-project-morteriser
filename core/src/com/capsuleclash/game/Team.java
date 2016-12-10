@@ -9,13 +9,13 @@ import java.util.Collections;
  *
  */
 public class Team {
-   private List<Figure> team;
+   private List<Figure> myTeam;
    
    /**
     * Constructs a new list for the team.
     */
    public Team() {
-      team = new ArrayList<>();
+      myTeam = new ArrayList<>();
    }
    
    /**
@@ -23,7 +23,7 @@ public class Team {
     * @param x figure to be added.
     */
    public void add(Figure x) {
-      team.add(x);
+      myTeam.add(x);
    }
    
    /**
@@ -31,7 +31,7 @@ public class Team {
     * @param x figure to be removed.
     */
    public void remove(Figure x) {
-      team.remove(x);
+      myTeam.remove(x);
    }
    
    /**
@@ -40,7 +40,7 @@ public class Team {
     */
    public int totalHealth() {
 	   int total = 0;
-	   for (Figure fig : team) {
+	   for (Figure fig : myTeam) {
 		   total += fig.getHealth();
 	   }
 	   return total;
@@ -50,7 +50,7 @@ public class Team {
     * Sorts the Team list by id order.
     */
    public void sort() {
-      Collections.sort(team);
+      Collections.sort(myTeam);
    }
    
 }

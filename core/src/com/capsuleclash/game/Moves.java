@@ -16,7 +16,7 @@ public class Moves {
 	 * @param spacesCanMove amount of tiles a figure can move.
 	 */
 	public Moves(int spacesCanMove) {
-		movesToMake = new ArrayList<Step>();
+		movesToMake = new ArrayList<>();
 		for (int x = -spacesCanMove; x <= spacesCanMove; x++) {
 			for (int y = -spacesCanMove + Math.abs(x); 
 					y <= spacesCanMove - Math.abs(x); y++) {

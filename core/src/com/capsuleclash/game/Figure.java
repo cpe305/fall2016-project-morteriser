@@ -79,6 +79,11 @@ public class Figure implements Comparable<Figure>{
 	   return result;
    }
    
+   @Override
+   public int hashCode() {
+	   return 0;
+   }
+   
    public int getAttack() {
 	   return attack;
    }
@@ -86,7 +91,6 @@ public class Figure implements Comparable<Figure>{
    public int getDefense() {
 	   return defense;
    }
-   
    /**
     * Have this figure lose health based on how much damage it would take.
     * @param damage the amount of health to lose.
