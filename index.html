@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Capsule Clash by cpe305</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Capsule Clash</h1>
+      <h2 class="project-tagline">fall2016-project-morteriser</h2>
+      <a href="https://github.com/cpe305/fall2016-project-morteriser" class="btn">View on GitHub</a>
+      <a href="https://github.com/cpe305/fall2016-project-morteriser/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/cpe305/fall2016-project-morteriser/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="capsule-clash" class="anchor" href="#capsule-clash" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Capsule Clash</h1>
+
+<p><a href="https://travis-ci.org/cpe305/fall2016-project-morteriser"><img src="https://travis-ci.org/cpe305/fall2016-project-morteriser.svg?branch=master" alt="Build Status"></a></p>
+
+<p>Capsule Clash is a 2 player strategy game where players select units to fight each other with on a turn based board.</p>
+
+<p>Github url: <a href="https://github.com/cpe305/fall2016-project-morteriser">https://github.com/cpe305/fall2016-project-morteriser</a></p>
+
+<h2>
+<a id="description" class="anchor" href="#description" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Description</h2>
+
+<p><img src="http://i.imgur.com/llzVJSq.png" alt="Player 2 selects their units after Player 1."></p>
+
+<p>Each player begins with their selected units.</p>
+
+<p><img src="http://i.imgur.com/6WLhq3C.png" alt="Both players have chosen the same units but in a different order."></p>
+
+<p>Player 1 begins their turn and is able to:</p>
+
+<ul>
+<li>
+<p>Select a unit they own:</p>
+
+<ul>
+<li>Select to Move:
+
+<ul>
+<li>Select a tile to move to. Able to Attack afterwards or end the turn.
+<img src="http://i.imgur.com/52UfvcH.png" alt="Movement Selection">
+</li>
+</ul>
+</li>
+<li>Select to Attack:
+
+<ul>
+<li>Select a tile to attack if possible. Will end the turn afterwards.
+<img src="http://i.imgur.com/pinwMiq.png" alt="Attack Selection">
+</li>
+</ul>
+</li>
+<li>Select to end turn.</li>
+</ul>
+</li>
+</ul>
+
+<p><img src="http://i.imgur.com/BcALpao.png" alt="Finished turn after killing an enemy unit."></p>
+
+<p>Player 1's turn then ends, and player 2's turn begins, giving them the same choices to follow.</p>
+
+<p>After an attack is dealt the units will lose health based on the damage it will take. When a unit no longer has any health it will be removed from play. A player wins once all the opposing units are gone or they have the highest overall health of all their units should 50 turns have based for both players.</p>
+
+<h2>
+<a id="system-architecture" class="anchor" href="#system-architecture" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>System Architecture</h2>
+
+<p>3-Tier Layered Architecture:</p>
+
+<p><img src="http://i.imgur.com/xpIyA2U.png" alt="3-Tier"></p>
+
+<h2>
+<a id="uml-diagram" class="anchor" href="#uml-diagram" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UML Diagram</h2>
+
+<p>Class Diagram:
+<img src="http://i.imgur.com/lM2toKH.png" alt="Class Diagram"></p>
+
+<h2>
+<a id="design-patterns" class="anchor" href="#design-patterns" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Design Patterns</h2>
+
+<p><strong>Singleton Pattern:</strong></p>
+
+<ul>
+<li>Used for FigurineCollection and Renderer classes. Both can only be instantiated once due to creating a lot of expensive objects that are specific to what is read from an xml document. In the case of Renderer, the Texture class takes a lot of resources to create and using Singleton prevents the need to create it each time. While the FigurineCollection is meant to be used by many classes whenever it wants a reference to any of the possible figurines, preventing the need to instantiate all existing ones for each class that wants to look.</li>
+</ul>
+
+<p><strong>Strategy Pattern:</strong></p>
+
+<ul>
+<li>Used for Action interface. Allows Figurines to have different actions that they can take by implementing different classes to do each separate functionality. The application of this is how StandardAction calculates the damage based on your attack and the target's defense, while PierceAction calculates the damage based on your attack while ignoring the target's defense.</li>
+</ul>
+
+<p><strong>Factory Method Pattern:</strong></p>
+
+<ul>
+<li>Used for ActionFactory class. Allows the creation of a certain type of Action for each Figurine based on what was read in the xml document of FigurineCollection. This allows the document to say something simple like "standard" to then have the factory interpret that as instantiating a StandardAction class to put as that Figurine's Action.</li>
+</ul>
+
+<p><strong>Observer Pattern:</strong></p>
+
+<ul>
+<li>Used on MainGame and Board classes. Board is the Subject while MainGame is the Observer, as Board deals with all the logic in the game while MainGame deals with the graphics and user input. Whenever a change occurs in board, it notifies the MainGame to inform it to change what it displays.</li>
+</ul>
+
+<h2>
+<a id="tools-used" class="anchor" href="#tools-used" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tools Used</h2>
+
+<ul>
+<li>Libgdx</li>
+<li>Gradle</li>
+</ul>
+
+<h2>
+<a id="contact" class="anchor" href="#contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contact</h2>
+
+<p>E-mail: <a href="mailto:hstoytch@calpoly.edu">hstoytch@calpoly.edu</a>
+Alternative e-mail: <a href="mailto:christoytchev@gmail.com">christoytchev@gmail.com</a></p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/cpe305/fall2016-project-morteriser">Capsule Clash</a> is maintained by <a href="https://github.com/cpe305">cpe305</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
